@@ -15,3 +15,13 @@ Build the rest of the logic gates described in Chapter 1, yielding a
 complete basic chip-set. The only building blocks that you can use in this project are primitive
 Nand gates and the composite gates that you will gradually build on top of them in the last
 homework and this homework.
+
+**Homework 3:** Combinational Chips (Arithmetic + Logic Unit)
+
+Build the gates described in Chapter 2 (see table below), which will test your
+understanding of Boolean Logic and Arithmetic, building the gates that do so.
+
+**Homework 4:** Sequential Chips
+
+Build all gates described in Chapter 3 (see table below), which will test your
+understanding of sequential chips for our HACK architecture.
