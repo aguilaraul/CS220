@@ -60,12 +60,12 @@ CHIP ALU {
    Mux16(a=xyand,b=xyadd,sel=f,out=mux2out);
    
    // Negating result, if MSB is 1 then result is negative
-   Not16(in=mux2out,out=mux3not);
-   Mux16(a=mux2out,b=mux3not,sel=no,out[0..7]=zrcheck1,out[8..15]=zrcheck2,out[15]=ng, out=out);
+   Not16(in=mux2out,out=mux2not);
+   Mux16(a=mux2out,b=mux2not,sel=no,out[0..7]=half1,out[8..15]=half2,out[15]=ng, out=out);
    
    // checking if result is zero
-   Or8Way(in=zrcheck1,out=zr1);
-   Or8Way(in=zrcheck2,out=zr2);
+   Or8Way(in=half1,out=zr1);
+   Or8Way(in=half2,out=zr2);
    Or(a=zr1,b=zr2,out=zr3);
    Not(in=zr3,out=zr);
 }
