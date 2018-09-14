@@ -43,4 +43,9 @@ CHIP ALU {
 
     PARTS:
    // Put you code here:
+   And16(a=x,b=y,out=mux2and);
+   Add16(a=x,b=y,out=mux2add);
+   Mux16(a=mux2and,b=mux2add,sel=f,out=mux3not);
+   
+   
 }
