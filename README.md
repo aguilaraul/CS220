@@ -25,3 +25,8 @@ understanding of Boolean Logic and Arithmetic, building the gates that do so.
 
 Build all gates described in Chapter 3 (see table below), which will test your
 understanding of sequential chips for our HACK architecture.
+
+**Homework 5:** Machine Language
+
+Build the two Assembly Language programs described in Chapter 4, which will test your
+understanding of Assembly programs for our HACK architecture.
