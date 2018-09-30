@@ -13,8 +13,9 @@
 
 // Put your code here.
 
-@counter
-M = 0
+(START)
+	@counter
+	M = 0
 
 (LOOP)
 	@KBD				// set A to 24576
@@ -26,7 +27,7 @@ M = 0
 
 (WHITE)	
 	@counter			// set A to counter address
-	M = 0				// set counter to 0
+	D = M				// set D to counter value
 	@SCREEN				// set A to 16384
 	A = A+D				// RAM[16384+counter] add the counter to screen address to find current screen address
 	M = 0				// RAM[current address], paint screen white (RAM[A] = 0)
@@ -37,8 +38,8 @@ M = 0
 	D = M				// D = 16384 + counter -- to set the current screen pixel
 	@8192				// set A to 8192 (the range of screen addresses)
 	D = D-A				// D = (current screen address) - 8192
-	@EXIT
-	D; JGT				// Exit program if beyond last pixel (D>0)
+	@START
+	D; JEQ				// Exit program if beyond last pixel (D>0)
 	@LOOP
 	D; JLT				// Go back to loop if not beyond last pixel
 
@@ -55,8 +56,8 @@ M = 0
 	D = M				// D = 16384 + counter -- to set the current screen pixel
 	@8192				// set A to 8192 (the range of screen addresses)
 	D = D-A				// D = (current screen address) - 8192
-	@EXIT
-	D; JGT				// Exit program if beyond last pixel (D>0)
+	@START
+	D; JEQ				// Exit program if beyond last pixel (D>0)
 	@LOOP
 	D; JLT				// Go back to loop if not beyond last pixel
 
