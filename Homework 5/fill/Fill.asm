@@ -26,7 +26,7 @@ M = 0
 
 (WHITE)	
 	@counter			// set A to counter address
-	D = M				// set D to counter value
+	M = 0				// set counter to 0
 	@SCREEN				// set A to 16384
 	A = A+D				// RAM[16384+counter] add the counter to screen address to find current screen address
 	M = 0				// RAM[current address], paint screen white (RAM[A] = 0)
