@@ -39,7 +39,7 @@
 	@8192				// set A to 8192 (the range of screen addresses)
 	D = D-A				// D = (current screen address) - 8192
 	@START
-	D; JEQ				// Exit program if beyond last pixel (D>0)
+	D; JEQ				// Restart program if beyond last pixel (D>0)
 	@LOOP
 	D; JLT				// Go back to loop if not beyond last pixel
 
@@ -57,7 +57,7 @@
 	@8192				// set A to 8192 (the range of screen addresses)
 	D = D-A				// D = (current screen address) - 8192
 	@START
-	D; JEQ				// Exit program if beyond last pixel (D>0)
+	D; JEQ				// Restart program if beyond last pixel (D>0)
 	@LOOP
 	D; JLT				// Go back to loop if not beyond last pixel
 
