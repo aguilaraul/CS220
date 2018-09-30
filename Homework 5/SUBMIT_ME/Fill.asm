@@ -13,56 +13,54 @@
 
 // Put your code here.
 
-// while @KBD doesn't equal 0 peform while-loop
-// make a counter
-	@counter			// make a counter
-	M = 0				// set counter to 0
+@counter
+M = 0
 
 (LOOP)
-	@KBD
-	D = A
-	@WHITE
+	@KBD				// set A to 24576
+	D = M 				// set D to value at RAM[24576]
+	@WHITE				// Jump to WHITE if no key is pressed (D=0)
 	D; JEQ
-	@BLACK
-	0; JMP
-
-// paints first screen pixel black
-	@SCREEN   			// set A to 16384
-	M=-1        		// set first pixel memory address to -1 (black)
-	@counter
-	M = M+1				// increment counter to next screen pixel memory
-
-
-// make a while loop to increment screen address while key is held
-(BLACK)
-	@counter		// call current count
-	D = M			// set D to counter
-	@8191			// The range of screen addresses
-	D = D-A			// subtract current count from range
-	@InfiniteLoop	 
-	D; JGT			// Jump if greater than 0
-	@counter		// recalling counter
-	D = M			// set D to current count
-	@SCREEN			// set A to SCREEN address
-	A = A+D			// add count to screen address to get current position
-	M = -1			// set screen to black
-	@counter		// call counter
-	M = M+1			// increment counter
-	@BLACK
+	@BLACK				// Jump to BLACK if a key is pressed (D>0)
 	D; JGT
+
+(WHITE)	
+	@counter			// set A to counter address
+	D = M				// set D to counter value
+	@SCREEN				// set A to 16384
+	A = A+D				// RAM[16384+counter] add the counter to screen address to find current screen address
+	M = 0				// RAM[current address], paint screen white (RAM[A] = 0)
+	@counter			// set A to counter
+	M = M+1				// increment counter
 	
-(WHITE)
-	@counter		// recalling counter
-	D = M			// set D to current count
-	@SCREEN			// set A to SCREEN address
-	A = A+D			// add count to screen address to get current position
-	M = 0			// set screen to black
-	@counter		// call counter
-	M = M+1			// increment counter
-	@BLACK
-	D; JGT
+	@counter			// set A to counter address
+	D = M				// D = 16384 + counter -- to set the current screen pixel
+	@8192				// set A to 8192 (the range of screen addresses)
+	D = D-A				// D = (current screen address) - 8192
+	@EXIT
+	D; JGT				// Exit program if beyond last pixel (D>0)
+	@LOOP
+	D; JLT				// Go back to loop if not beyond last pixel
+
+(BLACK)
+	@counter			// set A to counter value
+	D = M				// set D to counter value
+	@SCREEN				// set A to 16384
+	A = A+D				// RAM[16384+counter] add the counter to screen address to find current screen address
+	M = -1				// paint screen black (RAM[A] = -1)
+	@counter			// set A to counter
+	M = M+1				// increment counter
+	
+	@counter			// set A to counter value
+	D = M				// D = 16384 + counter -- to set the current screen pixel
+	@8192				// set A to 8192 (the range of screen addresses)
+	D = D-A				// D = (current screen address) - 8192
+	@EXIT
+	D; JGT				// Exit program if beyond last pixel (D>0)
+	@LOOP
+	D; JLT				// Go back to loop if not beyond last pixel
 
 // infinite loop to end program
-(InfiniteLoop)
-	@InfiniteLoop
+(EXIT)
+	@EXIT
 	0; JMP
