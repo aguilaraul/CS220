@@ -33,15 +33,13 @@
 	M = 0				// RAM[current address], paint screen white (RAM[A] = 0)
 	@counter			// set A to counter
 	M = M+1				// increment counter
-	
-	@counter			// set A to counter address
-	D = M				// D = 16384 + counter -- to set the current screen pixel
+	D = M				// D = counter value -- to get the current screen pixel
 	@8192				// set A to 8192 (the range of screen addresses)
 	D = D-A				// D = (current screen address) - 8192
 	@START
-	D; JEQ				// Restart program if beyond last pixel (D>0)
+	D; JEQ				// Restart counter if at last pixel (D=0)
 	@LOOP
-	D; JLT				// Go back to loop if not beyond last pixel
+	D; JLT				// Go back to loop if not at last pixel
 
 (BLACK)
 	@counter			// set A to counter value
@@ -51,15 +49,13 @@
 	M = -1				// paint screen black (RAM[A] = -1)
 	@counter			// set A to counter
 	M = M+1				// increment counter
-	
-	@counter			// set A to counter value
-	D = M				// D = 16384 + counter -- to set the current screen pixel
+	D = M				// D = counter value -- to get the current screen pixel
 	@8192				// set A to 8192 (the range of screen addresses)
 	D = D-A				// D = (current screen address) - 8192
 	@START
-	D; JEQ				// Restart program if beyond last pixel (D>0)
+	D; JEQ				// Restart program if at last pixel (D=0)
 	@LOOP
-	D; JLT				// Go back to loop if not beyond last pixel
+	D; JLT				// Go back to loop if not at last pixel
 
 // infinite loop to end program
 (EXIT)
