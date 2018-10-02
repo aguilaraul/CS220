@@ -56,8 +56,3 @@
 	D; JEQ				// Restart program if at last pixel (D=0)
 	@LOOP
 	D; JLT				// Go back to loop if not at last pixel
-
-// infinite loop to end program
-(EXIT)
-	@EXIT
-	0; JMP

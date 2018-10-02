@@ -33,11 +33,11 @@
 
     @1              // set A to 1
     D = M           // set D to data in RAM[1]
-    MD = D-1        // subtracts 1 from RAM[1] and sets new value to D and RAM[0]          
+    MD = D-1        // decrements 1 from RAM[1] and assigns new value to D and RAM[1]          
     @END
     D; JEQ          // jumps to END if D = 0
     @LOOP
-    D; JGT          // continues mulitplying
+    D; JGT          // else continues mulitplying
 (END)
     @END
     0; JMP          // infinite loop to end program
