@@ -28,6 +28,8 @@ understanding of sequential chips for our HACK architecture.
 
 **Homework 5:** Machine Language
 
+Write and test the two programs described in what follows. When executed on the CPU emulator, your programs should generate the results mandated by the test scripts supplied in the project directory.
+
 - _Multiplication Program_ (Mult.asm):
 The inputs of this program are the current values stored in R0 and R1 (ie., the two top RAM locations). The program computes the product R0 x R1 and stores the result in R2. We assume (in this program) that R0>=0, R1>=0, and R0xR1<32768. Your program need not test these conditions, but rather assume that they hold. The supplied Mult.tst and Mult.cmp scripts will test your program on several representative data values.
 - _I/O-Handling Program_ (Fill.asm):
@@ -35,4 +37,4 @@ This program runs an infinite loop that listens to the keyboard input. When a ke
 
 **Homework 6:** Computer Architecture
 
-Build the Hack computer platform, culminating in the topmost Computer chip
+Build the Hack computer platform, culminating in the topmost Computer chip. The computer platform built in this project should be capable of executing programs written in the Hack machine language, specified in chapter 4. Demonstrate this capability by having your Computer chip run the three programs given here.
