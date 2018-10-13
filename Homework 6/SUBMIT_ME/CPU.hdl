@@ -59,7 +59,7 @@ CHIP CPU {
 	And(a=instruction[15],b=instruction[4],out=regD);
 	DRegister(in=aluout,load=regD,out=D);
 	
-	// Or write to address in Memory
+	// Determine if write to address in Memory
 	And(a=instruction[15],b=instruction[3],out=writeM);
 	
 	// Determine to load jumps
