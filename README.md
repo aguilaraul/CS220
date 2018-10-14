@@ -39,6 +39,6 @@ This program runs an infinite loop that listens to the keyboard input. When a ke
 
 Build the Hack computer platform, culminating in the topmost Computer chip. The computer platform built in this project should be capable of executing programs written in the Hack machine language, specified in chapter 4. Demonstrate this capability by having your Computer chip run the three programs given here.
 
-**Homework 6:** Computer Architecture
+**Homework 6:** Assembler
 
 Develop an assembler that translates programs written in Hack assembly language into the binary code understood by the Hack hardware platform. The assembler must implement the transaltion specification described in section 6.2.
