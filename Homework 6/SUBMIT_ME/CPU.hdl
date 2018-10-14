@@ -49,11 +49,11 @@ CHIP CPU {
 	Or(a=nintruction,b=instruction[5],out=regA);
 	ARegister(in=inA,load=regA,out=aout,out[0..14]=addressM);
 
-	// Determine if comp is from A-register or M input
-	And(a=instruction[15],b=instruction[12],out=AorM);
-	Mux16(a=aout,b=inM,sel=AorM,out=AM);
+	// Determine if instruction is from A-register or M input
+	And(a=instruction[15],b=instruction[12],out=am);
+	Mux16(a=aout,b=inM,sel=am,out=amout);
 	
-	ALU(x=D,y=AM,zx=instruction[11],nx=instruction[10],zy=instruction[9],ny=instruction[8],f=instruction[7],no=instruction[6],out=aluout,out=outM,zr=zr,ng=ng);
+	ALU(x=D,y=amout,zx=instruction[11],nx=instruction[10],zy=instruction[9],ny=instruction[8],f=instruction[7],no=instruction[6],out=aluout,out=outM,zr=zr,ng=ng);
 
 	// Determine if store into D-register
 	And(a=instruction[15],b=instruction[4],out=regD);
@@ -65,20 +65,20 @@ CHIP CPU {
 	// Determine to load jumps
 	Not(in=ng,out=pos);
 	Not(in=zr,out=nzr);
-	And(a=instruction[15],b=instruction[0],out=jgt);
 	And(a=pos,b=nzr,out=posnzr);
-	And(a=jgt,b=posnzr,out=ld1);
+	And(a=instruction[15],b=instruction[0],out=jgt);
+	And(a=jgt,b=posnzr,out=jg);
 
 	And(a=instruction[15],b=instruction[1],out=jeq);
-	And(a=jeq,b=zr,out=ld2);
+	And(a=jeq,b=zr,out=je);
 
 	And(a=instruction[15],b=instruction[2],out=jlt);
-	And(a=jlt,b=ng,out=ld3);
+	And(a=jlt,b=ng,out=jl);
 
-	Or(a=ld1,b=ld2,out=ldt);
-	Or(a=ld3,b=ldt,out=ld);
+	Or(a=jg,b=je,out=jge);
+	Or(a=jl,b=jge,out=jmp);
 	
 	// if there is a jump, set PC to A
 	// else set PC to PC+1
-	PC(in=aout,load=ld,inc=true,reset=reset,out[0..14]=pc);
+	PC(in=aout,load=jmp,inc=true,reset=reset,out[0..14]=pc);
 }
