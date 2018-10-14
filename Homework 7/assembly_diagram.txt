@@ -1,0 +1,38 @@
+Pass 1:
+	Read whole file + add label symbols
+
+Pass 2:
+	Add user-defined symbols
+
+Symbol Table:
+
+Add pre-defined symbols
+Add labels
+Add user-defined symbols
+
+Parse:
+
+get raw line
+clean line
+guess command type
+prase
+>parse A
+>parse C
+>parse L
+
+
+Code:
+getCommandType
+>A
+	check value
+	>int
+		decimalToBinary
+		0+""
+		outputToFile
+	>symbol
+		Add to symbol table
+>C
+	translate comp
+	translate desc
+	translate jump
+	>"111"+comp+desc+jump
