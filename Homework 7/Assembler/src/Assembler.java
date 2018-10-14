@@ -1,4 +1,8 @@
-//Author info here
+/**
+ * @author  Raul Aguilar
+ * @class   CS 220 2525
+ * @date    October 24, 2018
+ */
 //TODO: don't forget to document each method in all classes!
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;

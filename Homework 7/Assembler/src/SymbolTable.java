@@ -1,3 +1,8 @@
+/**
+ * @author  Raul Aguilar
+ * @class   CS 220 2525
+ * @date    October 24, 2018
+ */
 import java.util.HashMap;
 
 public class SymbolTable {
@@ -20,14 +25,5 @@ public class SymbolTable {
         symbolTable.put("THAT",4);
         symbolTable.put("SCREEN",16384);
         symbolTable.put("KBD",24576);
-    }
-
-    private static boolean isValidName(String symbol) {
-
-        for(char c: symbol) {
-            if (ALL_VALID_CHARS.indexOf(c) == -1) {
-                return false;
-            }
-        }
     }
 }
