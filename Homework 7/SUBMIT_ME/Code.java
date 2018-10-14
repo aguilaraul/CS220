@@ -79,44 +79,22 @@ public class Code {
         jumpCodes.put("JMP","111");
     }
 
-    /**
-     * Converts to string of bits for given mnemonic
-     * @param mnemonic the key given
-     * @return the converted bits for given key
-     */
     public String getComp(String mnemonic) {
-        return compCodes.get(mnemonic);
+        compCodes.ge
     }
 
-    /**
-     * Converts to string of bits for given mnemonic
-     * @param mnemonic the key given
-     * @return the converted bits for given key
-     */
-    public String getDest(String mnemonic) {
-        return destCodes.get(mnemonic);
-    }
+    public static String decimalToBinary (int decimal) {
+      StringBuilder sb = new StringBuilder();
+      for(int i = 0; i<15;i++) {
 
-    /**
-     * Converts to string of bits for given mnemonic
-     * @param mnemonic the key given
-     * @return the converted bits for given key
-     */
-    public String getJump(String mnemonic) {
-        return jumpCodes.get(mnemonic);
-    }
-
-    public static StringBuilder decimalToBinary (int decimal) {
-        StringBuilder sb = new StringBuilder();
-        for(int i = 0; i<15;i++) {
-
-            if(decimal % 2 == 0) {
-                sb.append("0");
-            } else {
-                sb.append("1");
-            }
-            decimal /= 2;
+        if(decimal % 2 == 0) {
+          sb.append("0");
+        } else {
+          sb.append("1");
         }
-        return sb.reverse();
+        decimal /= 2;
+      }
+
+      return sb.reverse();
     }
 }
