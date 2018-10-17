@@ -12,7 +12,6 @@ public class Parser {
     public static final char C_COMMAND = 'C';
     public static final char L_COMMAND = 'L';
 
-    private Scanner inputFile = new Scanner(System.in);
     private int lineNumber;
     private String rawLine;
     private String cleanLine;
@@ -28,12 +27,48 @@ public class Parser {
      * @param inFileName the name of the asm file
      */
     public void Parser(String inFileName) {
-        BufferedReader in;
+        BufferedReader br;
         try {
-            in = new BufferedReader(new FileReader(inFileName));
+            br = new BufferedReader(new FileReader(inFileName));
+            while( hasMoreCommands(br) ) {
+                advance(br);
+            }
         } catch (FileNotFoundException e) {
-            System.out.println("File could not be opened. Ending program.");
+            System.out.println("File could not be found. Ending program.");
             System.exit(0);
+        }
+    }
+
+    /**
+     * Returns boolean if more commands left, closes stream if not
+     * @param br BufferedReader to stream-in file
+     * @return True if more commands, else closes stream
+     */
+    public boolean hasMoreCommands(BufferedReader br) {
+        String line;
+        boolean hasMoreCommands = false;
+        try {
+            if( (line = br.readLine() ) != null ) {
+                hasMoreCommands = true;
+            } else {
+                hasMoreCommands = false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return hasMoreCommands;
+    }
+
+    /**
+     * Reads next line from file and pares it into rawLine
+     * @param br BufferedReader to stream-in file
+     */
+    public void advance(BufferedReader br) {
+        try {
+            rawLine = br.readLine();
+            System.out.println(rawLine);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

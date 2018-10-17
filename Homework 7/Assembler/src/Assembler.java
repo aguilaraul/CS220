@@ -26,6 +26,7 @@ public class Assembler {
         String inputFileName, outputFileName;
         PrintWriter outputFile = null; //keep compiler happy
         SymbolTable symbolTable;
+        symbolTable = new SymbolTable();
         int romAddress, ramAddress;
 
         //get input file name from command line or console input
@@ -33,8 +34,7 @@ public class Assembler {
             System.out.println("command line arg = " + args[0]);
             inputFileName = args[0];
         }
-        else
-        {
+        else {
             Scanner keyboard = new Scanner(System.in);
 
             System.out.println("Please enter assembly file name you would like to assemble.");
@@ -55,6 +55,7 @@ public class Assembler {
         }
 
         // TODO: finish driver as algorithm describes
+        firstPass(inputFileName, symbolTable);
     }
 
     // TODO: march through the source code without generating any code
@@ -63,6 +64,10 @@ public class Assembler {
     // n = romAddress which you should keep track of as you go through each line
     //HINT: when should rom address increase? What kind of commands?
     private static void firstPass(String inputFileName, SymbolTable symbolTable) {
+        //Create default symbol table
+        Parser parser = new Parser();
+        symbolTable.SymbolTable();
+        parser.Parser(inputFileName);
 
     }
 
