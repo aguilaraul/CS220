@@ -66,7 +66,19 @@ public class Parser {
     public void advance(BufferedReader br) {
         try {
             rawLine = br.readLine();
-            System.out.println(rawLine);
+            cleanLine = cleanLine(rawLine);
+            commandType = parseCommandType(cleanLine);
+            System.out.println("Clean line:");
+            System.out.println(cleanLine);
+            System.out.println("Command type:");
+            System.out.println(commandType);
+            System.out.println("Parsed dest:");
+            parseDest(cleanLine);
+            System.out.println("Parsed comp:");
+            parseComp(cleanLine);
+            System.out.println("Parsed jump:");
+            parseJump(cleanLine);
+            System.out.println();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,7 +89,7 @@ public class Parser {
      * @param rawLine String of a single line from file before cleaned
      * @return String of clean line without comments and whitespace
      */
-    private static String cleanLine (String rawLine) {
+    private String cleanLine (String rawLine) {
         String clean;
         int commentLocation;
 
@@ -99,7 +111,7 @@ public class Parser {
      * @param clean String clean line without comments or whitespace
      * @return Char corresponding to guessed command type
      */
-    private static char parseCommandType(String clean) {
+    private char parseCommandType(String clean) {
 
         if( clean == null || clean.length() == 0) {
             return NO_COMMAND; //N
@@ -112,6 +124,45 @@ public class Parser {
             return A_COMMAND; // A
         } else {
             return C_COMMAND; // C
+        }
+    }
+
+    private void parse(char commandType){
+
+    }
+
+    /**
+     * Helper method parses line to get dest part
+     * @param cleanLine A clean line to parse dest
+     */
+    private void parseDest(String cleanLine) {
+        int equation;
+        equation = cleanLine.indexOf('=');
+        if(equation != -1) {
+            destMnemonic = cleanLine.substring(0,equation);
+            System.out.println(destMnemonic);
+        }
+    }
+
+    /**
+     * Helper method parses line to get comp part
+     * @param cleanLine A clean line to parse comp
+     */
+    private void parseComp(String cleanLine) {
+        int equation, semicolon;
+        equation = cleanLine.indexOf('=');
+        if(equation != -1) {
+            compMnemonic = cleanLine.substring(equation+1);
+            System.out.println(compMnemonic);
+        }
+    }
+
+    private void parseJump(String cleanLine) {
+        int semicolon;
+        semicolon = cleanLine.indexOf(';');
+        if(semicolon != -1) {
+            jumpMnemonic = cleanLine.substring(semicolon+1);
+            System.out.println(jumpMnemonic);
         }
     }
 }

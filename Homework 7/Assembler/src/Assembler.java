@@ -68,7 +68,6 @@ public class Assembler {
         Parser parser = new Parser();
         symbolTable.SymbolTable();
         parser.Parser(inputFileName);
-
     }
 
     // TODO: march again through the source code and process each line:

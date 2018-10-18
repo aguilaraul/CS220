@@ -3,6 +3,14 @@ Pass 1:
 
 Pass 2:
 	Add user-defined symbols
+	A-instruction:
+		If a number
+			Convert to binary
+		If a symbol
+			Check if symbol is already in table
+	
+	C-instruction:
+		
 
 Symbol Table:
 

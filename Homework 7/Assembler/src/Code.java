@@ -106,6 +106,11 @@ public class Code {
         return jumpCodes.get(mnemonic);
     }
 
+    /**
+     * Converts a decimal number to binary
+     * @param decimal decimal number
+     * @return binary representation of decimal number
+     */
     public static StringBuilder decimalToBinary (int decimal) {
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i<15;i++) {
