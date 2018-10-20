@@ -31,7 +31,7 @@ public class Parser {
         try {
             br = new BufferedReader(new FileReader(inFileName));
             while( hasMoreCommands(br) ) {
-                advance(br);
+                advance();
             }
         } catch (FileNotFoundException e) {
             System.out.println("File could not be found. Ending program.");
@@ -48,40 +48,29 @@ public class Parser {
         String line;
         boolean hasMoreCommands = false;
         try {
-            if( (line = br.readLine() ) != null ) {
+            if( (rawLine = br.readLine() ) != null ) {
+                lineNumber++;
                 hasMoreCommands = true;
             } else {
                 hasMoreCommands = false;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Has More Commands error");
         }
         return hasMoreCommands;
     }
 
     /**
      * Reads next line from file and pares it into rawLine
-     * @param br BufferedReader to stream-in file
      */
-    public void advance(BufferedReader br) {
-        try {
-            rawLine = br.readLine();
-            cleanLine = cleanLine(rawLine);
-            commandType = parseCommandType(cleanLine);
-            System.out.println("Clean line:");
-            System.out.println(cleanLine);
-            System.out.println("Command type:");
-            System.out.println(commandType);
-            System.out.println("Parsed dest:");
-            parseDest(cleanLine);
-            System.out.println("Parsed comp:");
-            parseComp(cleanLine);
-            System.out.println("Parsed jump:");
-            parseJump(cleanLine);
-            System.out.println();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void advance() {
+        System.out.println("Line Number: " + lineNumber);
+        System.out.println("Raw Line:");
+        System.out.println(rawLine);
+        System.out.println("Clean Line:");
+        System.out.println(cleanLine = cleanLine(rawLine));
+        System.out.println("Command type: " + parseCommandType(cleanLine));
+        System.out.println("_________________________________________________");
     }
 
     /**
@@ -92,6 +81,10 @@ public class Parser {
     private String cleanLine (String rawLine) {
         String clean;
         int commentLocation;
+
+        if(rawLine == null) {
+            return clean = "";
+        }
 
         // remove whitespace
         clean = rawLine.replaceAll(" ","");
@@ -127,42 +120,9 @@ public class Parser {
         }
     }
 
-    private void parse(char commandType){
+    private void parse(char commandType) {
+        if(commandType == L_COMMAND) {
 
-    }
-
-    /**
-     * Helper method parses line to get dest part
-     * @param cleanLine A clean line to parse dest
-     */
-    private void parseDest(String cleanLine) {
-        int equation;
-        equation = cleanLine.indexOf('=');
-        if(equation != -1) {
-            destMnemonic = cleanLine.substring(0,equation);
-            System.out.println(destMnemonic);
-        }
-    }
-
-    /**
-     * Helper method parses line to get comp part
-     * @param cleanLine A clean line to parse comp
-     */
-    private void parseComp(String cleanLine) {
-        int equation, semicolon;
-        equation = cleanLine.indexOf('=');
-        if(equation != -1) {
-            compMnemonic = cleanLine.substring(equation+1);
-            System.out.println(compMnemonic);
-        }
-    }
-
-    private void parseJump(String cleanLine) {
-        int semicolon;
-        semicolon = cleanLine.indexOf(';');
-        if(semicolon != -1) {
-            jumpMnemonic = cleanLine.substring(semicolon+1);
-            System.out.println(jumpMnemonic);
         }
     }
 }
