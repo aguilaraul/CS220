@@ -21,17 +21,18 @@ public class Parser {
     private String compMnemonic;
     private String jumpMnemonic;
 
+    Code c = new Code();
     /**
      * Opens input file and prepares to parse
      * If files can't be opened, ends program with error message
      * @param inFileName the name of the asm file
      */
-    public void Parser(String inFileName) {
+    public void Parser(String inFileName, SymbolTable symbolTable) {
         BufferedReader br;
         try {
             br = new BufferedReader(new FileReader(inFileName));
             while( hasMoreCommands(br) ) {
-                advance();
+                advance(symbolTable);
             }
         } catch (FileNotFoundException e) {
             System.out.println("File could not be found. Ending program.");
@@ -55,21 +56,23 @@ public class Parser {
                 hasMoreCommands = false;
             }
         } catch (IOException e) {
-            System.out.println("Has More Commands error");
+            e.printStackTrace();
         }
         return hasMoreCommands;
     }
 
     /**
-     * Reads next line from file and pares it into rawLine
+     * Reads next line from file and pares it into instance var
      */
-    public void advance() {
+    public void advance(SymbolTable symbolTable) {
         System.out.println("Line Number: " + lineNumber);
         System.out.println("Raw Line:");
         System.out.println(rawLine);
         System.out.println("Clean Line:");
         System.out.println(cleanLine = cleanLine(rawLine));
-        System.out.println("Command type: " + parseCommandType(cleanLine));
+        commandType = parseCommandType(cleanLine);
+        System.out.println("Command type: " + commandType);
+        parse(commandType, symbolTable);
         System.out.println("_________________________________________________");
     }
 
@@ -120,9 +123,73 @@ public class Parser {
         }
     }
 
-    private void parse(char commandType) {
-        if(commandType == L_COMMAND) {
+    private void parse(char commandType, SymbolTable symbolTable) {
+        if(commandType == L_COMMAND || commandType == A_COMMAND) {
+            parseSymbol(cleanLine, commandType);
+        } else if (commandType == C_COMMAND) {
+            parseDest(cleanLine);
+            parseComp(cleanLine);
+            parseJump(cleanLine);
+        }
+    }
 
+    private void parseSymbol(String cleanLine, char commandType) {
+        if(commandType == L_COMMAND) {
+            int begin = cleanLine.indexOf('(');
+            int end = cleanLine.indexOf(')');
+            symbol = cleanLine.substring(begin+1,end);
+            System.out.println(symbol); //debug
+        }
+        if(commandType == A_COMMAND) {
+            symbol = cleanLine.substring(1);
+            System.out.println(symbol); // debug
+            try {
+                int decimal = Integer.parseInt(symbol);
+                System.out.println(c.decimalToBinary(decimal)); // debug
+            } catch (NumberFormatException e) {
+
+            }
+        }
+    }
+
+    private void parseDest(String cleanLine) {
+        c.Code();
+        int equals = cleanLine.indexOf('=');
+        if (equals != -1) {
+            destMnemonic = cleanLine.substring(0, equals);
+            System.out.println("Dest: " + destMnemonic); //debug
+            System.out.println(c.getDest(destMnemonic));
+        } else {
+            destMnemonic = null;
+            System.out.println("Dest: " + destMnemonic); //debug
+            System.out.println(c.getDest(destMnemonic));
+        }
+    }
+    private void parseComp(String cleanLine) {
+        c.Code();
+        int equals = cleanLine.indexOf('=');
+        if (equals != -1) {
+            compMnemonic = cleanLine.substring(equals+1);
+            System.out.println("Comp: " + compMnemonic); //debug
+            System.out.println(c.getComp(compMnemonic));
+        } else {
+            int semicolon = cleanLine.indexOf(';');
+            compMnemonic = cleanLine.substring(0,semicolon);
+            System.out.println("Comp: " + compMnemonic); //debug
+            System.out.println(c.getComp(compMnemonic));
+        }
+    }
+    private void parseJump(String cleanLine) {
+        c.Code();
+        int semicolon = cleanLine.indexOf(';');
+        if (semicolon != -1) {
+            jumpMnemonic = cleanLine.substring(semicolon+1);
+            System.out.println("Jump: " + jumpMnemonic); //debug
+            System.out.println(c.getJump(jumpMnemonic));
+        } else {
+            jumpMnemonic = null;
+            System.out.println("Jump: " + jumpMnemonic); //debug
+            System.out.println(c.getJump(jumpMnemonic));
         }
     }
 }

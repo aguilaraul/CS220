@@ -52,7 +52,7 @@ public class Code {
         compCodes.put("D|M","1010101");
 
         // Dest codes
-        destCodes.put("null","000");
+        destCodes.put(null,"000");
         destCodes.put("","000");
         destCodes.put("\"null\"","000");
         destCodes.put("M","001");
@@ -67,7 +67,7 @@ public class Code {
         destCodes.put("AMD","111");
 
         // Jump codes
-        jumpCodes.put("null","000");
+        jumpCodes.put(null,"000");
         jumpCodes.put("","000");
         jumpCodes.put("\"null\"","000");
         jumpCodes.put("JGT","001");

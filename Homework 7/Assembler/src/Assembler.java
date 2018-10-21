@@ -27,7 +27,7 @@ public class Assembler {
         PrintWriter outputFile = null; //keep compiler happy
         SymbolTable symbolTable;
         symbolTable = new SymbolTable();
-        int romAddress, ramAddress;
+        int romAddress = 0, ramAddress = 0;
 
         //get input file name from command line or console input
         if(args.length == 1) {
@@ -55,7 +55,7 @@ public class Assembler {
         }
 
         // TODO: finish driver as algorithm describes
-        firstPass(inputFileName, symbolTable);
+        firstPass(inputFileName, symbolTable, romAddress);
     }
 
     // TODO: march through the source code without generating any code
@@ -63,11 +63,11 @@ public class Assembler {
     // add the pair <LABEL, n> to the symbol table
     // n = romAddress which you should keep track of as you go through each line
     //HINT: when should rom address increase? What kind of commands?
-    private static void firstPass(String inputFileName, SymbolTable symbolTable) {
+    private static void firstPass(String inputFileName, SymbolTable symbolTable, int  romAddress) {
         //Create default symbol table
         Parser parser = new Parser();
         symbolTable.SymbolTable();
-        parser.Parser(inputFileName);
+        parser.Parser(inputFileName, symbolTable);
     }
 
     // TODO: march again through the source code and process each line:
