@@ -1,8 +1,4 @@
-/**
- * @author  Raul Aguilar
- * @class   CS 220 2525
- * @date    October 24, 2018
- */
+//Author info here
 //TODO: don't forget to document each method in all classes!
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
@@ -27,7 +23,8 @@ public class Assembler {
         PrintWriter outputFile = null; //keep compiler happy
         SymbolTable symbolTable;
         symbolTable = new SymbolTable();
-        int romAddress = 0, ramAddress = 0;
+
+        int romAddress = 0, ramAddress = 16;
 
         //get input file name from command line or console input
         if(args.length == 1) {
@@ -48,7 +45,6 @@ public class Assembler {
 
         try {
             outputFile = new PrintWriter(new FileOutputStream(outputFileName));
-            secondPass(inputFileName, symbolTable, outputFile);
         } catch (FileNotFoundException ex) {
             System.err.println("Could not open output file " + outputFileName);
             System.err.println("Run program again, make sure you have write permissions, etc.");
@@ -56,6 +52,10 @@ public class Assembler {
         }
 
         // TODO: finish driver as algorithm describes
+
+        firstPass(inputFileName, symbolTable, romAddress);
+
+        //secondPass(inputFileName, symbolTable, outputFile);
     }
 
     // TODO: march through the source code without generating any code
@@ -63,8 +63,32 @@ public class Assembler {
     // add the pair <LABEL, n> to the symbol table
     // n = romAddress which you should keep track of as you go through each line
     //HINT: when should rom address increase? What kind of commands?
-    private static void firstPass(String inputFileName, SymbolTable symbolTable, int  romAddress) {
-        //Create default symbol table
+    private static void firstPass(String inputFileName, SymbolTable symbolTable, int romAddress) {
+
+        symbolTable.SymbolTable();
+        Parser p = new Parser();
+        p.Parser(inputFileName);
+        while( p.hasMoreCommands() ) {
+            p.advance();
+
+            System.out.println( "Line number: " + p.getLineNumber() );
+
+
+
+            if(p.getCommandType() == Parser.L_COMMAND) {
+                System.out.println( "Label: " + p.getSymbol() );
+                System.out.println( "ROM: " + romAddress );
+                symbolTable.addEntry(p.getSymbol(), romAddress);
+            }
+
+//            System.out.println( "Raw line: " + p.getRawLine() );
+//            System.out.println( "Clean line: " + p.getCleanLine() );
+//            System.out.println( "Command type: " + p.getCommandType() );
+//            System.out.println( "Symbol: " + p.getSymbol() );
+//            System.out.println( "Instruction: " + "111" + p.getComp() + p.getDest() +p.getJump() );
+            System.out.println( );
+
+        }
     }
 
     // TODO: march again through the source code and process each line:
@@ -80,9 +104,29 @@ public class Assembler {
     // HINT: when should rom address increase?  What should ram address start
     // at? When should it increase?  What do you do with L commands and No commands?
     private static void secondPass(String inputFileName, SymbolTable symbolTable, PrintWriter outputFile) {
-        Parser parser = new Parser();
         symbolTable.SymbolTable();
-        parser.Parser(inputFileName, outputFile);
+        Parser p = new Parser();
+        p.Parser(inputFileName);
+        while( p.hasMoreCommands() ) {
+            p.advance();
+
+            System.out.println( "Line number: " + p.getLineNumber() );
+            outputFile.write("Hello World!");
+
+            if(p.getCommandType() == Parser.C_COMMAND) {
+                System.out.println( "Instructions: " + "111" + p.getComp() + p.getDest() + p.getJump()  );
+                outputFile.write( "111" + p.getComp() + p.getDest() + p.getJump() );
+            }
+
+            System.out.println( "Raw line: " + p.getRawLine() );
+            System.out.println( "Clean line: " + p.getCleanLine() );
+            System.out.println( "Symbol: " + p.getSymbol() );
+            System.out.println( "Instruction: " + "111" + p.getComp() + p.getDest() +p.getJump() );
+            outputFile.println( p.getSymbol() );
+            System.out.println( );
+        }
+
+        System.out.println("Finished assembling. Program exiting.");
     }
 
 

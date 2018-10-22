@@ -23,22 +23,22 @@ public class Parser {
     private String compMnemonic;
     private String jumpMnemonic;
 
-    Code c = new Code();
+    private Code c = new Code();
 
     /**
      * Opens input file and prepares to parse
      * If files can't be opened, ends program with error message
      * @param inFileName the name of the asm file
      */
-    public void Parser(String inFileName, PrintWriter outputFile) {
+    public void Parser(String inFileName) {
         try {
             inputFile = new Scanner(new FileReader(inFileName));
-            while( hasMoreCommands(inputFile) ) {
-                advance();
-                cleanLine = cleanLine(rawLine);
-                commandType = parseCommandType(cleanLine);
-                parse(commandType, outputFile);
-            }
+//            while( hasMoreCommands() ) {
+//                advance();
+//                cleanLine();
+//                parseCommandType();
+//                parse();
+//            }
         } catch (FileNotFoundException e) {
             System.out.println("File could not be found. Ending program.");
             System.exit(0);
@@ -47,12 +47,10 @@ public class Parser {
 
     /**
      * Returns boolean if more commands left, closes stream if not
-     * @param inputFile BufferedReader to stream-in file
      * @return True if more commands, else closes stream
      */
-    public boolean hasMoreCommands(Scanner inputFile) {
+    public boolean hasMoreCommands() {
         if( inputFile.hasNextLine() ) {
-            lineNumber++;
             return true;
         } else {
             inputFile.close();
@@ -61,85 +59,77 @@ public class Parser {
     }
 
     /**
-     * Reads next line from file and pares it into instance var
+     * Reads next line from file and pares it into instance vars
+     * Current instruction parts put into instance vars
      */
     public void advance() {
+        lineNumber++;
         rawLine = inputFile.nextLine();
+        cleanLine();
+        parseCommandType();
+        parse();
     }
 
     /**
-     * Reads raw line from file and stripes line of whitespace and comments
-     * @param rawLine String of a single line from file before cleaned
-     * @return String of clean line without comments and whitespace
+     * Reads raw line from file and strips line of whitespace and comments
      */
-    private String cleanLine (String rawLine) {
-        String clean;
+    private void cleanLine () {
         int commentLocation;
 
         if(rawLine == null) {
-            return clean = "";
+            cleanLine = "";
+        } else {
+            // remove whitespace
+            cleanLine = rawLine.replaceAll(" ","");
+            cleanLine = cleanLine.replaceAll("\t","");
+
+            // remove comments
+            commentLocation = cleanLine.indexOf("//");
+            if(commentLocation != -1) {
+                cleanLine = cleanLine.substring(0,commentLocation);
+            }
         }
 
-        // remove whitespace
-        clean = rawLine.replaceAll(" ","");
-        clean = clean.replaceAll("\t","");
 
-        // remove comments
-        commentLocation = clean.indexOf("//");
-        if(commentLocation != -1) {
-            clean = clean.substring(0,commentLocation);
-        }
-
-        return clean;
     }
 
     /**
      * Guesses which command type it is from cleaned line
-     * @param clean String clean line without comments or whitespace
-     * @return Char corresponding to guessed command type
      */
-    private char parseCommandType(String clean) {
-
-        if( clean == null || clean.length() == 0) {
-            return NO_COMMAND; //N
-        }
-
-        char first = clean.charAt(0);
-        if (first == '(') {
-            return L_COMMAND; // L
-        } else if (first == '@') {
-            return A_COMMAND; // A
+    private void parseCommandType() {
+        if( cleanLine == null || cleanLine.length() == 0) {
+            commandType =  NO_COMMAND; //N
         } else {
-            return C_COMMAND; // C
+            char first = cleanLine.charAt(0);
+            if (first == '(') {
+                commandType = L_COMMAND; // L
+            } else if (first == '@') {
+                commandType = A_COMMAND; // A
+            } else {
+                commandType = C_COMMAND; // C
+            }
         }
     }
 
     /**
      * Helper method parses line depending on instuction type
      * Appropriate parts of instruction filled
-     * @param commandType
      */
-    private void parse(char commandType, PrintWriter outputFile) {
+    private void parse() {
         if(commandType == L_COMMAND || commandType == A_COMMAND) {
-            parseSymbol(cleanLine, commandType);
-            System.out.println(symbol);
-            outputFile.write(symbol);
+            parseSymbol();
         } else if (commandType == C_COMMAND) {
-            parseComp(cleanLine);
-            parseDest(cleanLine);
-            parseJump(cleanLine);
-            System.out.println("111" + compMnemonic + destMnemonic + jumpMnemonic);
-            outputFile.write("111" + compMnemonic + destMnemonic + jumpMnemonic);
+            parseComp();
+            parseDest();
+            parseJump();
         }
     }
 
     /**
      * Parses symbol from A- or L-commands
      * symbol has appropriate value from instruction
-     * @param cleanLine cleaned line to parse symbol from
-     * @param commandType command type to determine which command to perform
      */
-    private void parseSymbol(String cleanLine, char commandType) {
+    private void parseSymbol() {
         if(commandType == L_COMMAND) {
             int begin = cleanLine.indexOf('(');
             int end = cleanLine.indexOf(')');
@@ -149,9 +139,9 @@ public class Parser {
             symbol = cleanLine.substring(1);
             try {
                 int decimal = Integer.parseInt(symbol);
-                symbol = "0"+ c.decimalToBinary(decimal);
+                symbol = "0"+ Code.decimalToBinary(decimal);
             } catch (NumberFormatException e) {
-
+                System.out.println("Error: " + e);
             }
         }
     }
@@ -159,9 +149,8 @@ public class Parser {
     /**
      * Helper method parses line to get dest part
      * destMnemonic set to appropriate value from instruction
-     * @param cleanLine clean String to parse destMnemonic
      */
-    private void parseDest(String cleanLine) {
+    private void parseDest() {
         c.Code();
         int equals = cleanLine.indexOf('=');
         if (equals != -1) {
@@ -176,9 +165,8 @@ public class Parser {
     /**
      * Helper method parses line to get comp part
      * compMnemonic set to appropriate value from instruction
-     * @param cleanLine clean String to parse compMnemonic
      */
-    private void parseComp(String cleanLine) {
+    private void parseComp() {
         c.Code();
         int equals = cleanLine.indexOf('=');
         if (equals != -1) {
@@ -194,9 +182,8 @@ public class Parser {
     /**
      * Helper method parses line to get jump part
      * jumpMnemonic set to appropriate value from instruction
-     * @param cleanLine clean String to parse jumpMnemonic from
      */
-    private void parseJump(String cleanLine) {
+    private void parseJump() {
         c.Code();
         int semicolon = cleanLine.indexOf(';');
         if (semicolon != -1) {
