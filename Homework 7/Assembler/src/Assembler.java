@@ -48,6 +48,7 @@ public class Assembler {
 
         try {
             outputFile = new PrintWriter(new FileOutputStream(outputFileName));
+            secondPass(inputFileName, symbolTable, outputFile);
         } catch (FileNotFoundException ex) {
             System.err.println("Could not open output file " + outputFileName);
             System.err.println("Run program again, make sure you have write permissions, etc.");
@@ -55,7 +56,6 @@ public class Assembler {
         }
 
         // TODO: finish driver as algorithm describes
-        firstPass(inputFileName, symbolTable, romAddress);
     }
 
     // TODO: march through the source code without generating any code
@@ -65,9 +65,6 @@ public class Assembler {
     //HINT: when should rom address increase? What kind of commands?
     private static void firstPass(String inputFileName, SymbolTable symbolTable, int  romAddress) {
         //Create default symbol table
-        Parser parser = new Parser();
-        symbolTable.SymbolTable();
-        parser.Parser(inputFileName, symbolTable);
     }
 
     // TODO: march again through the source code and process each line:
@@ -83,7 +80,9 @@ public class Assembler {
     // HINT: when should rom address increase?  What should ram address start
     // at? When should it increase?  What do you do with L commands and No commands?
     private static void secondPass(String inputFileName, SymbolTable symbolTable, PrintWriter outputFile) {
-
+        Parser parser = new Parser();
+        symbolTable.SymbolTable();
+        parser.Parser(inputFileName, outputFile);
     }
 
 

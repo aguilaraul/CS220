@@ -18,7 +18,7 @@ public class Code {
         compCodes.put("0","0101010");
         compCodes.put("1","0111111");
         compCodes.put("-1","0111010");
-        compCodes.put("D","001100");
+        compCodes.put("D","0001100");
         compCodes.put("A","0110000");
         compCodes.put("M","1110000");
         compCodes.put("!D","0001101");
