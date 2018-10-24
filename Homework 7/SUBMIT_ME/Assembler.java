@@ -77,10 +77,8 @@ public class Assembler {
         while( p.hasMoreCommands() ) {
             p.advance();
 
-            //System.out.println( "Line number: " + p.getLineNumber() ); //debug
-
             if(p.getCommandType() == Parser.L_COMMAND) {
-                symbolTable.addEntry(p.getSymbol(), romAddress);
+                symbolTable.addEntry(p.getSymbol(), romAddress, p.getLineNumber());
             }
             if(p.getCommandType() == Parser.A_COMMAND) {
                 romAddress++;
@@ -112,8 +110,6 @@ public class Assembler {
         while (p.hasMoreCommands()) {
             p.advance();
 
-            //System.out.println("Line number: " + p.getLineNumber()); //debug
-
             if (p.getCommandType() == Parser.C_COMMAND) {
                 String instruction = "111" + p.getComp() + p.getDest() + p.getJump() + '\n';
                 outputFile.write(instruction);
@@ -130,7 +126,7 @@ public class Assembler {
                         String dec = "0"+ Code.decimalToBinary(symbolTable.getAddress( p.getSymbol() )) + '\n';
                         outputFile.write(dec);
                     } else {
-                        symbolTable.addEntry(p.getSymbol(), ramAddress);
+                        symbolTable.addEntry(p.getSymbol(), ramAddress, p.getLineNumber());
                     }
                     romAddress++;
                 }

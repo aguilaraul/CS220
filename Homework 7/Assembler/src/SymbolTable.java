@@ -33,12 +33,12 @@ public class SymbolTable {
      * @param address address associated with that symbol
      * @return true if pair is added, false if illegal name
      */
-    public boolean addEntry(String symbol, int address) {
+    public boolean addEntry(String symbol, int address, int lineNumber) {
         boolean entryAdded = false;
         if(contains(symbol)) {
             entryAdded = false;
         }
-        if (isValidSymbolName(symbol)) {
+        if (isValidSymbolName(symbol, lineNumber)) {
             symbolTable.put(symbol, address);
             entryAdded = true;
         }
@@ -68,12 +68,19 @@ public class SymbolTable {
         return symbolTable.get(symbol);
     }
 
-    private static boolean isValidSymbolName(String symbol) {
+    /**
+     * Boolean to check if user-defined symbol name is valid
+     * @param symbol the symbol being tested
+     * @param lineNumber line number symbol is on for error checking
+     * @return true if symbol is valid, program exits otherwise
+     */
+    private static boolean isValidSymbolName(String symbol, int lineNumber) {
         boolean isValidName = false;
         for(char c : symbol.toCharArray()) {
             if(ALL_VALID_CHARS.indexOf(c) == -1) {
-                System.out.println("Variable name is not valid.");
+                System.out.printf("Symbol name is not valid on line %d. Program exiting.", lineNumber);
                 isValidName = false;
+                System.exit(0);
             } else {
                 isValidName = true;
             }

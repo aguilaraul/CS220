@@ -19,7 +19,7 @@
     @1              // sets A to 1
     D = M           // sets D to data in RAM[1]
     @END            // Jumps to END if D = 0
-    D; JEQ          
+    D; JEQ
 
 (LOOP)
     @2              // sets A to 2
@@ -33,7 +33,7 @@
 
     @1              // set A to 1
     D = M           // set D to data in RAM[1]
-    MD = D-1        // decrements 1 from RAM[1] and assigns new value to D and RAM[1]          
+    MD = D-1        // decrements 1 from RAM[1] and assigns new value to D and RAM[1]
     @END
     D; JEQ          // jumps to END if D = 0
     @LOOP
