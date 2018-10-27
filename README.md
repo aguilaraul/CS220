@@ -42,3 +42,7 @@ Build the Hack computer platform, culminating in the topmost Computer chip. The 
 **Homework 7:** Assembler
 
 Develop an assembler that translates programs written in Hack assembly language into the binary code understood by the Hack hardware platform. The assembler must implement the transaltion specification described in section 6.2.
+
+**Homework 8:** Virtual Machine I: Stack Arithmetic
+
+Build the first part of the VM translator, focusing on the implementation of the stack arithmetic and memory access commands of the VM language.
