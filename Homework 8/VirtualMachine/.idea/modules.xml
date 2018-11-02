@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/VirtualMachine.iml" filepath="$PROJECT_DIR$/VirtualMachine.iml" />
-      <module fileurl="file://$PROJECT_DIR$/VirtualMachinePart1.iml" filepath="$PROJECT_DIR$/VirtualMachinePart1.iml" />
     </modules>
   </component>
 </project>
