@@ -1,0 +1,195 @@
+goto EXIT // Exit is a label
+---
+@EXIT
+0;JMP
+
+if-goto START //start is a label
+--
+// decide to jump
+@SP		// A = SP = 0
+AM = M - 1	// A = RAM[SP] = RAM[0] = vSP (value inside SP) - 1
+D = !M		// D = RAM[vSP] = !top of stack
+// if top of stack is true, jump
+@START		// A = START (ROM location)
+D; JEQ
+
+label loop
+---
+(LOOP)
+
+push constant 1
+---
+@SP		// A = 0
+M = M + 1	// RAM[0] = vSP + 1
+A = M - 1	// A = RAM[0] - 1
+M = 1		// RAM[vSP] = where SP is pointing to 1
+
+push constant 5
+---
+@5
+D = A
+@SP		// A = 0
+M = M + 1	// RAM[0] = vSP + 1
+A = M - 1	// A = RAM[0] - 1
+M = D		// RAM[vSP] = where SP is pointing to at = 5
+
+
+push local 5
+---
+// load value (from virtual memory)
+@5
+D = A
+@LCL		// A = LCL = 1
+A = D + M	// D = 5 + RAM[LCL] = address of local 5
+D = M		// D = value at local 5
+
+//// writePushD() ////
+// increment stack pointer
+@SP		// A = 0
+M = M + 1	// RAM[0] = vSP + 1
+// store value in D at top of stack
+A = M - 1	// A = RAM[0] - 1
+M = D		// RAM[vSP] = where SP is pointing to at = 5
+
+push argument 5
+---
+@5
+D = A
+@ARG		// A = ARG = 1
+A = D + M	// D = 5 + RAM[ARG] = address of argument 5
+D = M		// D = value at argument 5
+
+@SP		// A = 0
+M = M + 1	// RAM[0] = vSP + 1
+A = M - 1	// A = RAM[0] - 1
+M = D		// RAM[vSP] = where SP is pointing to at = 5
+
+push temp 5
+---
+@5
+D = A
+@5		// A = 5
+A = D + A	// D = 5 + RAM[ARG] = address of argument 5
+D = M		// D = value at argument 5
+@SP		// A = 0
+M = M + 1	// RAM[0] = vSP + 1
+A = M - 1	// A = RAM[0] - 1
+M = D		// RAM[vSP] = where SP is pointing to at = 5
+
+add
+---
+//1: Decrement SP
+@SP		                               // A = 0
+AM = M - 1	                         // RAM[0] = RAM[0] - 1
+//2: Pop most top value
+D = M		                             // D = RAM[vSP-1]
+//3: Store RAM[vSP - 2] + RAM[vSP - 1]
+A = A - 1	                           // A = vSP - 2
+M = M + D	                           // RAM[vSP - 2] = RAM[vSP - 2] + RAM[vSP - 1]
+
+sub
+======
+//1: Decrement SP
+@SP                                 // A = 0
+AM = M - 1                          // A, RAM[0] = vSP - 1 (moves pointer down)
+//2: Pop most top value
+D = M                               // D = RAM[vSP-1]
+//3: Store RAM[vSP - 2] - RAM[vSP - 1]
+A = A - 1                           // A = vSP - 2
+M = M - D                           // RAM[vSP - 2] = RAM[vSP - 2] - RAM[vSP - 1]
+
+neg
+======
+//1: Decrement stack address
+@SP                             // A = 0
+AM = M - 1                      //
+A = !A
+
+
+pop static 7  (suppose this is inside of file named f)
+----
+// writePopD // move SP up and store top value into D
+@SP		                                  // A = SP = 0
+AM = M - 1	                            // A, RAM[0] = RAM[0] - 1 = vSP -1 -- Move up stack pointer
+D = M		                                // D = RAM[vSP - 1] Store value into D
+// Static stuff
+@f.7		                                // Concatenate: "@" + fileName + "." + index
+M = D
+
+pop local 2
+----
+// writePopD // move SP up and store top value into D
+@SP		                                 // A = SP = 0
+AM = M - 1	                           // A, RAM[0] = RAM[0] - 1 = vSP -1 -- Move up stack pointer
+D = M		                               // D = RAM[vSP - 1] Store value into D
+// local stuff
+@LCL		                               // A = LCL = 1
+A = M + 1	                             // A = RAM[LCL] + 1 = RAM[1] + 1 = vLCL + 1
+A = A + 1	                             // A = vLCL + 2
+M = D		                               // RAM[vLCL + 2] = D
+
+eq
+======
+// generate labels _1 and _2           // write method to generate unique labels -- keep counter
+@SP                                    // A = SP pointer
+M = M - 1                              // A = SP address - 1
+A = A - 1                              // A = SP address - 2
+D = M                                  // D = M[SP address - 2] = value @ SP address - 2
+A = A + 1                              // A = SP address - 1
+D = D - M                              // D = (value @ SPadr - 2) - (value @ SPadr - 1)
+@_1                                    // A = unique label _1
+D;JEQ                                  // jump if D equals 0 (both values were equal)
+@_2 //not equal branch                 // A = unique label _2
+D = 0                                  // D = 0 = false, if here then values weren't equal so set D to false
+0;JMP                                  // unconditional jump to _2
+(_1) //equal branch                    // unique label _1, if here then values were equal
+D = -1                                 // D = -1 = true, so set D to true
+(_2) //put bool at top of stack        // unique label _2, will happen regardless
+@SP                                    // A = SP pointer
+AM = M - 1                             // AM[SP pointer] = SP address - 1
+A = A - 1                              // A = SP address - 2
+M = D                                  // M[SPaddress - 2] = D = top of stack has true/false result
+
+gt
+======
+// generate labels _1 and _2           // write method to generate unique labels -- keep counter
+@SP                                    // A = SP pointer
+M = M - 1                              // A = SP address - 1
+A = A - 1                              // A = SP address - 2
+D = M                                  // D = M[SP address - 2] = value @ SP address - 2
+A = A + 1                              // A = SP address - 1
+D = D - M                              // D = (value @ SPadr - 2) - (value @ SPadr - 1)
+@_1                                    // A = unique label _1
+D;JGT                                  // jump if D is greater than 0 (both values were equal)
+@_2 //not equal branch                 // A = unique label _2
+D = 0                                  // D = 0 = false, if here then values weren't equal so set D to false
+0;JMP                                  // unconditional jump to _2
+(_1) //equal branch                    // unique label _1, if here then values were equal
+D = -1                                 // D = -1 = true, so set D to true
+(_2) //put bool at top of stack        // unique label _2, will happen regardless
+@SP                                    // A = SP pointer
+AM = M - 1                             // AM[SP pointer] = SP address - 1
+A = A - 1                              // A = SP address - 2
+M = D                                  // M[SPaddress - 2] = D = top of stack has true/false result
+
+lt
+======
+// generate labels _1 and _2           // write method to generate unique labels -- keep counter
+@SP                                    // A = SP pointer
+M = M - 1                              // A = SP address - 1
+A = A - 1                              // A = SP address - 2
+D = M                                  // D = M[SP address - 2] = value @ SP address - 2
+A = A + 1                              // A = SP address - 1
+D = D - M                              // D = (value @ SPadr - 2) - (value @ SPadr - 1)
+@_1                                    // A = unique label _1
+D;JLT                                  // jump if D is less than 0 (both values were equal)
+@_2 //not equal branch                 // A = unique label _2
+D = 0                                  // D = 0 = false, if here then values weren't equal so set D to false
+0;JMP                                  // unconditional jump to _2
+(_1) //equal branch                    // unique label _1, if here then values were equal
+D = -1                                 // D = -1 = true, so set D to true
+(_2) //put bool at top of stack        // unique label _2, will happen regardless
+@SP                                    // A = SP pointer
+AM = M - 1                             // AM[SP pointer] = SP address - 1
+A = A - 1                              // A = SP address - 2
+M = D                                  // M[SPaddress - 2] = D = top of stack has true/false result
