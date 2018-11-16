@@ -46,3 +46,7 @@ Develop an assembler that translates programs written in Hack assembly language 
 **Homework 8:** Virtual Machine I: Stack Arithmetic
 
 Build the first part of the VM translator, focusing on the implementation of the stack arithmetic and memory access commands of the VM language.
+
+**Homework 9:** Operating System
+
+Implement a Jack OS as described in the chapter
