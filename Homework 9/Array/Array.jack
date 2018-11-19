@@ -1,0 +1,19 @@
+class Array {
+
+  /**
+  * Constructs a new array of the given size
+  * @pram size  size of new array
+  */
+  function Array new(int size) {
+    return;
+  }
+
+  /**
+  * Disposes of this array
+  */
+  function void dispose() {
+    do Memory.deAlloc(this);
+    return;
+  }
+
+}

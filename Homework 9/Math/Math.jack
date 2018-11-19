@@ -1,0 +1,92 @@
+class Math {
+
+  /**
+  * Returns the absolute value of x
+  * @pram x integer value
+  * @return x if x >=  0, otherwise -x if x < 0
+  */
+  function int abs(int x) {
+    if(x = 0) {
+      return x
+    }
+
+    if(x > 0) {
+      return x;
+    } else {
+      return -x
+    }
+  }
+  /**
+  * Returns the product of x and y
+  * @pram x
+  * @pram y
+  * @return integer product of x and y
+  */
+  function int multiply(int x, int y) {
+    var int product;
+    var int shiftedX;
+    var int j;
+    let product = 0;
+    let shiftedX = x;
+
+    while
+
+    return;
+  }
+
+  /**
+  * Returns the integer part of x/y
+  * @pram x dividend
+  * @pram y divisor
+  * @return integer quotient of x/y
+  */
+  function int divide(int x, int y) {
+    var int q;
+    if(y > x) {
+      return 0
+    }
+
+    let q = divide(x, 2*y);
+    if ( (x - 2 * q * y) < y ) {
+      return 2 * q;
+    } else {
+      return 2 * q + 1;
+    }
+  }
+
+  /**
+  * Returns the minimum of x and y
+  * @pram x
+  * @pram y
+  * @return smaller integer between x and y
+  */
+  function int min(int x, int y) {
+    if (x > y) {
+      return y;
+    } else {
+      return x;
+    }
+  }
+
+  /**
+  * Returns the maximum of x and y
+  * @pram x
+  * @pram y
+  * @return bigger integer between x and y
+  */
+  function int max(int x, int y) {
+    if (x > y) {
+      return x;
+    } else {
+      return y;
+    }
+  }
+  /**
+  * Returns the integer part of the square root of x
+  * @pram x radicand
+  * @result integer square root of x
+  */
+  function int sqrt(int x) {
+    
+  }
+}
