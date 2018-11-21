@@ -44,4 +44,4 @@ module And_tb;
 		$monitor("|  %b  |  %b  |  %b  |", a, b, out); 
 	end
 	
-endmodule //End of Not_tb
+endmodule

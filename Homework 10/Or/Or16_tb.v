@@ -27,7 +27,7 @@ module Or16_tb;
 	//initial values
 		a = 16'b0000_0000_0000_0000;
 		b = 16'b0000_0000_0000_0000;
-	//ticks
+	//test values
 		# 1 a = 16'b0000_0000_0000_0000;
 			b = 16'b1111_1111_1111_1111;
 			
@@ -57,4 +57,4 @@ module Or16_tb;
 		$monitor("| %16b | %16b | %16b |", a, b, out); 
 	end 
 	
-endmodule //End of Not_tb
+endmodule

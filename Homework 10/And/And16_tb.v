@@ -57,4 +57,4 @@ module And16_tb;
 		$monitor("| %16b | %16b | %16b |", a, b, out); 
 	end 
 	
-endmodule //End of Not_tb
+endmodule

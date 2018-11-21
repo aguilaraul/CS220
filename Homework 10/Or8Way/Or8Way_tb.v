@@ -1,18 +1,17 @@
 //-----------------------------------------------------
-// Design Name : Xor Testbench
-// File Name   : Xor.v
-// Function    : Testbench for Xor gate
+// Design Name : Or8Way Testbench
+// File Name   : Or8Way.v
+// Function    : Testbench for Or gate
 // Coder       : Raul Aguilar
 //-----------------------------------------------------
-module Xor_tb;
+module Or8Way_tb;
 	/*VARIABLE SETUP */
-	reg a, b; //inputs are registers
+	reg[7:0] in; //inputs are registers
 	wire out; //outputs are wires, one bit default
 
 	//create chip instance and connect it
-	Xor xor1 (
-		.a		(a),
-		.b		(b),
+	Or8Way or8way1 (
+		.in		(in),
 		.out	(out)
 	);
 	
@@ -24,16 +23,13 @@ module Xor_tb;
 	/* TEST VALUES 
 	# 1 means wait one timestep */
 	initial begin
-		//initial values
-		a = 0;
-		b = 0;
-		//test values
-		# 1 a = 0;
-			b = 1;
-		# 1 a = 1;
-			b = 0;
-		# 1 a = 1;
-			b = 1;
+		// initial values
+		in = 8'b0000_0000;
+		// test values
+		# 1 in = 8'b1111_1111;
+		# 1 in = 8'b0001_0000;
+		# 1 in = 8'b0000_0001;
+		# 1 in = 8'b0010_0110;
 		# 1 $stop; //stop after last timestep
 	end 
 
@@ -42,8 +38,8 @@ module Xor_tb;
 	//display happens only once
 	//monitor runs whenever variables change
 	initial begin
-		$display("|  a  |  b  | out |"); 
-		$monitor("|  %b  |  %b  |  %b  |", a, b, out); 
+		$display("| %8s | %s |", "in", "out"); 
+		$monitor("| %8b |  %b  |", in, out); 
 	end
 	
 endmodule

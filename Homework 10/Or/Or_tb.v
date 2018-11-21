@@ -24,8 +24,10 @@ module Or_tb;
 	/* TEST VALUES 
 	# 1 means wait one timestep */
 	initial begin
-		a = 0;//initial values
+		// initial values
+		a = 0;
 		b = 0;
+		// test values
 		# 1 a = 0;
 			b = 1;
 		# 1 a = 1;
@@ -44,4 +46,4 @@ module Or_tb;
 		$monitor("|  %b  |  %b  |  %b  |", a, b, out); 
 	end
 	
-endmodule //End of Not_tb
+endmodule

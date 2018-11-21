@@ -1,19 +1,20 @@
 //-----------------------------------------------------
-// Design Name : Xor Testbench
-// File Name   : Xor.v
-// Function    : Testbench for Xor gate
+// Design Name : DMux Testbench
+// File Name   : DMux.v
+// Function    : Testbench for DMux gate
 // Coder       : Raul Aguilar
 //-----------------------------------------------------
-module Xor_tb;
+module DMux_tb;
 	/*VARIABLE SETUP */
-	reg a, b; //inputs are registers
-	wire out; //outputs are wires, one bit default
+	reg in, sel; //inputs are registers
+	wire a, b; //outputs are wires, one bit default
 
 	//create chip instance and connect it
-	Xor xor1 (
+	DMux dmux1 (
+		.in		(in),
+		.sel	(sel),
 		.a		(a),
-		.b		(b),
-		.out	(out)
+		.b		(b)
 	);
 	
 	/* PULSING CLOCK FOR TEST
@@ -25,15 +26,13 @@ module Xor_tb;
 	# 1 means wait one timestep */
 	initial begin
 		//initial values
-		a = 0;
-		b = 0;
+		in = 0;
+		sel = 0;
 		//test values
-		# 1 a = 0;
-			b = 1;
-		# 1 a = 1;
-			b = 0;
-		# 1 a = 1;
-			b = 1;
+		# 1 sel = 1;
+		# 1 in = 1;
+			sel = 0;
+		# 1 sel = 1;
 		# 1 $stop; //stop after last timestep
 	end 
 
@@ -42,8 +41,8 @@ module Xor_tb;
 	//display happens only once
 	//monitor runs whenever variables change
 	initial begin
-		$display("|  a  |  b  | out |"); 
-		$monitor("|  %b  |  %b  |  %b  |", a, b, out); 
+		$display("|  in  |  sel  |  a  |  b  |"); 
+		$monitor("|   %b  |   %b   |  %b  |  %b  |", in, sel, a, b); 
 	end
 	
 endmodule
