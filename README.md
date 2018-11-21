@@ -50,3 +50,8 @@ Build the first part of the VM translator, focusing on the implementation of the
 **Homework 9:** Operating System
 
 Implement a Jack OS as described in the chapter
+
+**Homework 10:** Verilog
+
+Recreate some of the Nand2Tetris Project 1 Elementary Gates in Verilog along with their testbenches, to compare our HDL language against an industry-standard language. The following are the only gates you will recreate:
+*Not, Not16, And, And16, Or, Or16, Xor, Xor16, DMux, Or8Way*
