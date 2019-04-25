@@ -1,5 +1,7 @@
 # CS220-HW-Projects
-Homework and projects built during CS220 Fall 2018.
+Homework and projects built during CS 220: Computer Architecture and Assembly Language
+
+This course introduces the fundamental physical and structural concepts of assembly language programming. Topics include machine architecture, memory addressing, input/output, interrupts, control structures, compiling, and linking.
 
 Following along with *The Elements of Computing Systems* and https://www.nand2tetris.org/
 
