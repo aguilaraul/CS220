@@ -4,8 +4,8 @@
 // File name: projects/01/Xor.hdl
 
 /**
- *  Exclusive-or gate:
- *  out = not (a == b)
+ * Exclusive-or gate:
+ * out = not (a == b)
  */
 
 CHIP Xor {
@@ -14,8 +14,9 @@ CHIP Xor {
 
     PARTS:
     // Put your code here:
-	Nand(a=a, b=b, out=outab);
-	Nand(a=a, b=outab, out=or1);
-	Nand(a=outab, b=b, out=or2);
-	Nand(a=or1, b=or2, out=out);
+	Not(in=a, out=notA);
+	And(a=notA, b=b, out=and1);
+	Not(in=b, out=notB);
+	And(a=a, b=notB, out=and2);
+	Or(a=and1, b=and2, out=out);
 }
