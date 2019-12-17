@@ -1,34 +1,31 @@
 /**
  * @author  Raul Aguilar
- * @class   CS 220 2525
- * @date    October 26, 2018
+ * @date    October 16, 2019
  */
-import java.io.*;
-import java.util.Scanner;
 
-public class Parser {
-    public static final char NO_COMMAND = 'N';
-    public static final char A_COMMAND = 'A';
-    public static final char C_COMMAND = 'C';
-    public static final char L_COMMAND = 'L';
+ import java.io.*;
+ import java.util.Scanner;
+
+ public class Parser {
 
     private Scanner inputFile;
     private int lineNumber;
     private String rawLine;
 
     private String cleanLine;
-    private char commandType;
+    private Command commandType;
     private String symbol;
     private String destMnemonic;
     private String compMnemonic;
     private String jumpMnemonic;
 
     private Code c = new Code();
+    Command command;
 
     /**
      * Opens input file and prepares to parse
-     * If files can't be opened, ends program with error message
-     * @param inFileName the name of the asm file
+     * If file cannot be found ends program with error message
+     * @param inFileName
      */
     public void Parser(String inFileName) {
         try {
@@ -44,7 +41,7 @@ public class Parser {
      * @return True if more commands, else closes stream
      */
     public boolean hasMoreCommands() {
-        if( inputFile.hasNextLine() ) {
+        if(inputFile.hasNextLine()) {
             return true;
         } else {
             inputFile.close();
@@ -53,8 +50,10 @@ public class Parser {
     }
 
     /**
-     * Reads next line from file and pares it into instance vars
-     * Current instruction parts put into instance vars
+     * Reads the next command from the input and makes it the
+     * current command.
+     * Should only be called if hasMoreCommands() is true.
+     * Initially there is no current command.
      */
     public void advance() {
         lineNumber++;
@@ -65,54 +64,53 @@ public class Parser {
     }
 
     /**
-     * Reads raw line from file and strips line of whitespace and comments
+     * Reads raw line from file and strips it of whitespace
+     * and comments
      */
-    private void cleanLine () {
-        int commentLocation;
+    private void cleanLine() {
+        int commentIndex;
 
         if(rawLine == null) {
             cleanLine = "";
         } else {
             // remove whitespace
-            cleanLine = rawLine.replaceAll(" ","");
-            cleanLine = cleanLine.replaceAll("\t","");
+            cleanLine = rawLine.replaceAll(" ", "");
+            cleanLine = cleanLine.replaceAll("\t", "");
 
-            // remove comments
-            commentLocation = cleanLine.indexOf("//");
-            if(commentLocation != -1) {
-                cleanLine = cleanLine.substring(0,commentLocation);
+            //remove comments
+            commentIndex = cleanLine.indexOf("/");
+            if(commentIndex != -1) {
+                cleanLine = cleanLine.substring(0, commentIndex);
             }
         }
-
-
     }
 
     /**
-     * Guesses which command type it is from cleaned line
+     * Guesses which command type it is from clean line
      */
     private void parseCommandType() {
-        if( cleanLine == null || cleanLine.length() == 0) {
-            commandType =  NO_COMMAND; //N
+        if(cleanLine == null || cleanLine.length() == 0) {
+            commandType = command.NO_COMMAND;
         } else {
             char first = cleanLine.charAt(0);
-            if (first == '(') {
-                commandType = L_COMMAND; // L
-            } else if (first == '@') {
-                commandType = A_COMMAND; // A
+            if(first == '(') {
+                commandType = Command.L_COMMAND;
+            } else if(first == '@') {
+                commandType = Command.A_COMMAND;
             } else {
-                commandType = C_COMMAND; // C
+                commandType = Command.C_COMMAND;
             }
         }
     }
 
     /**
-     * Helper method parses line depending on instuction type
+     * Helper method: parses line depending on instruction type
      * Appropriate parts of instruction filled
      */
     private void parse() {
-        if(commandType == L_COMMAND || commandType == A_COMMAND) {
+        if(commandType == Command.L_COMMAND || commandType == Command.A_COMMAND) {
             parseSymbol();
-        } else if (commandType == C_COMMAND) {
+        } else if(commandType == Command.C_COMMAND) {
             parseComp();
             parseDest();
             parseJump();
@@ -120,29 +118,26 @@ public class Parser {
     }
 
     /**
-     * Parses symbol from A- or L-commands
-     * symbol has appropriate value from instruction
+     * Parses symbol from A- or L-Commands
      */
     private void parseSymbol() {
-
-        if(commandType == L_COMMAND) {
+        if(commandType == Command.L_COMMAND) {
             int begin = cleanLine.indexOf('(');
             int end = cleanLine.indexOf(')');
-            symbol = cleanLine.substring(begin+1,end);
+            symbol = cleanLine.substring(begin+1, end);
         }
-        if(commandType == A_COMMAND) {
+        if(commandType == Command.A_COMMAND) {
             symbol = cleanLine.substring(1);
         }
     }
 
     /**
-     * Helper method parses line to get dest part
-     * destMnemonic set to appropriate value from instruction
+     * Helper method: parses line to get dest part
      */
     private void parseDest() {
         c.Code();
         int equals = cleanLine.indexOf('=');
-        if (equals != -1) {
+        if(equals != -1) {
             destMnemonic = cleanLine.substring(0, equals);
             destMnemonic = c.getDest(destMnemonic);
         } else {
@@ -152,30 +147,31 @@ public class Parser {
     }
 
     /**
-     * Helper method parses line to get comp part
-     * compMnemonic set to appropriate value from instruction
+     * Helper method: parses line to get comp part
      */
     private void parseComp() {
         c.Code();
         int equals = cleanLine.indexOf('=');
-        if (equals != -1) {
+        int semicolon = cleanLine.indexOf(';');
+        if(semicolon == -1 && equals >= 0) {
             compMnemonic = cleanLine.substring(equals+1);
             compMnemonic = c.getComp(compMnemonic);
-        } else {
-            int semicolon = cleanLine.indexOf(';');
-            compMnemonic = cleanLine.substring(0,semicolon);
+        } else if(semicolon > 0 && equals >= 0) {
+            compMnemonic = cleanLine.substring(equals+1, semicolon);
+            compMnemonic = c.getComp(compMnemonic);
+        } else if(semicolon > 0 && equals == -1) {
+            compMnemonic = cleanLine.substring(0, semicolon);
             compMnemonic = c.getComp(compMnemonic);
         }
     }
 
     /**
-     * Helper method parses line to get jump part
-     * jumpMnemonic set to appropriate value from instruction
+     * Helper method: parses line to get jump part
      */
     private void parseJump() {
         c.Code();
         int semicolon = cleanLine.indexOf(';');
-        if (semicolon != -1) {
+        if(semicolon != -1) {
             jumpMnemonic = cleanLine.substring(semicolon+1);
             jumpMnemonic = c.getJump(jumpMnemonic);
         } else {
@@ -185,66 +181,68 @@ public class Parser {
     }
 
     /**
-     * getter for command type
-     * @return char for command type (N/A/C/L)
+     * Getter for the command type of the current line
+     * @return Command enum for command type
      */
-    public char getCommandType() {
+    public Command getCommandType() {
         return commandType;
     }
 
     /**
-     * getter for symbol name
-     * @return string from symbol name
+     * Getter for the symbol parsed from the line
+     * @return String for symbol
      */
     public String getSymbol() {
         return symbol;
     }
 
     /**
-     * getter for dest part of C-instruction
-     * @return mnemonic for dest part
+     * Getter for dest part of C-instruction
+     * May be empty
+     * @return the dest mnemonic
      */
     public String getDest() {
         return destMnemonic;
     }
 
     /**
-     * getter for comp part of C-instruction
-     * @return mnemonic for comp part
+     * Getter for the comp part of the C-instruction
+     * @return the comp mnemonic
      */
     public String getComp() {
         return compMnemonic;
     }
 
     /**
-     * getter for jump part of C-instruction
-     * @return mnemonic for jump part
+     * Getter for the jump part of the C-instruction
+     * May be empty
+     * @return the jump mnemonic
      */
     public String getJump() {
         return jumpMnemonic;
     }
 
     /**
-     * getter for rawLine from file
-     * @return String of current original line from file
+     * Get the current line from the file
+     * @return line from the file
      */
     public String getRawLine() {
         return rawLine;
     }
 
     /**
-     * getter for cleanLine from file
-     * @return String of current clean instruction from file
+     * Get the clean version of the raw line
+     * @return cleaned up line
      */
     public String getCleanLine() {
         return cleanLine;
     }
 
     /**
-     * getter for lineNumber
-     * @return line number currently being processed from file
+     * Get the line number of the symbol encountered
+     * @return current line number
      */
     public int getLineNumber() {
         return lineNumber;
     }
-}
+ }

@@ -1,36 +1,37 @@
 /**
- * @author  Raul Aguilar
- * @class   CS 220 2525
- * @date    October 26, 2018
+ * @author Raul Aguilar
+ * @date    October 14, 2019
  */
+
 import java.util.HashMap;
 
 public class SymbolTable {
-    private static String INITIAL_VALID_CHARS;
     private static String ALL_VALID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_.$:";
-
+    
     private HashMap<String, Integer> symbolTable = new HashMap<>();
 
     /**
      * Initializes hashmap with predefined symbols
      */
     public void SymbolTable() {
-        for (int i = 0; i < 16;i++) {
-            symbolTable.put("R"+i,i);
+        for(int i = 0; i < 16; i++) {
+            symbolTable.put("R"+i, i);
         }
-        symbolTable.put("SP",0);
-        symbolTable.put("LCL",1);
-        symbolTable.put("ARG",2);
-        symbolTable.put("THIS",3);
-        symbolTable.put("THAT",4);
-        symbolTable.put("SCREEN",16384);
-        symbolTable.put("KBD",24576);
+        symbolTable.put("SP", 0);
+        symbolTable.put("LCL", 1);
+        symbolTable.put("ARG", 2);
+        symbolTable.put("THIS", 3);
+        symbolTable.put("THAT", 4);
+        symbolTable.put("SCREEN", 16384);
+        symbolTable.put("KBD", 24576);
     }
 
+    
     /**
      * Adds new pair of symbol/address to hashmap
-     * @param symbol name of symbol to add
-     * @param address address associated with that symbol
+     * @param symbol    name of symbol to add
+     * @param address   address associated with that symbol
+     * @param lineNumber line number where symbol encountered
      * @return true if pair is added, false if illegal name
      */
     public boolean addEntry(String symbol, int address, int lineNumber) {
@@ -38,10 +39,11 @@ public class SymbolTable {
         if(contains(symbol)) {
             entryAdded = false;
         }
-        if (isValidSymbolName(symbol, lineNumber)) {
+        if(isValidSymbolName(symbol, lineNumber)) {
             symbolTable.put(symbol, address);
             entryAdded = true;
         }
+
         return entryAdded;
     }
 
@@ -51,7 +53,7 @@ public class SymbolTable {
      * @return true if symbol exist, false if not
      */
     public boolean contains(String symbol) {
-        if ( symbolTable.containsKey(symbol) ) {
+        if(symbolTable.containsKey(symbol)) {
             return true;
         } else {
             return false;
@@ -60,8 +62,8 @@ public class SymbolTable {
 
     /**
      * Returns address in hashmap of given symbol
-     * PRECONDITION: symbol is in hashmap(check w/ contains() first)
-     * @param symbol the symbol to obtain address of
+     * PRECONDITION: symbol is in hashmap(check w/ contains())
+     * @param symbol to obtain address
      * @return address associated with symbol in hashmap
      */
     public int getAddress(String symbol) {
@@ -71,12 +73,12 @@ public class SymbolTable {
     /**
      * Boolean to check if user-defined symbol name is valid
      * @param symbol the symbol being tested
-     * @param lineNumber line number symbol is on for error checking
-     * @return true if symbol is valid, program exits otherwise
+     * @param lineNumber line number the symbol is found on
+     * @return true if symbol name is valid, otherwise exit with error message
      */
     private static boolean isValidSymbolName(String symbol, int lineNumber) {
         boolean isValidName = false;
-        for(char c : symbol.toCharArray()) {
+        for(char c:symbol.toCharArray()) {
             if(ALL_VALID_CHARS.indexOf(c) == -1) {
                 System.out.printf("Symbol name is not valid on line %d. Program exiting.", lineNumber);
                 isValidName = false;
@@ -85,6 +87,7 @@ public class SymbolTable {
                 isValidName = true;
             }
         }
+
         return isValidName;
     }
-}
+ }
