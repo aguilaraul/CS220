@@ -1,0 +1,27 @@
+// Lab 10 Question 5
+class Main {
+	function void main() {
+		var int x, y;
+		
+		// Initialize
+		let x = 5;
+		let y = 4;
+		
+		// Print product
+		do Output.printInt(Main.mult(x, y));
+		
+		return;
+	}
+	
+	function int mult(int x, int y) {
+		var int sum, n;
+		let sum = 0;
+		let n = 1;
+		while(n - y < 1) {
+			let sum = sum + x;
+			let n = n + 1;
+		}
+		
+		return sum;
+	}
+}

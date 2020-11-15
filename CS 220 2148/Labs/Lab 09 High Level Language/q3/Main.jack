@@ -1,0 +1,21 @@
+// Lab 10 Question 3
+class Main {
+	function void main() {
+		var int num1, num2, num3, sum, average;
+		
+		// Retrieve data from user
+		let num1 = Keyboard.readInt("Enter number 1: ");
+		let num2 = Keyboard.readInt("Enter number 2: ");
+		let num3 = Keyboard.readInt("Enter number 3: ");
+		
+		// Calculate the average
+		let sum = num1 + num2 + num3;
+		let average = Math.divide(sum, 3);
+		
+		// Output
+		do Output.printString("The average of the three numbers is: ");
+		do Output.printInt(average);
+		
+		return;
+	}
+}

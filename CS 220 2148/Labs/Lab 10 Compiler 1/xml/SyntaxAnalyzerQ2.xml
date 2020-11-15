@@ -1,0 +1,32 @@
+<tokens>
+	<doStatement>
+	<keyword> do </keyword>
+	<subroutineCall>
+		<className>
+			<identifier> Output </identifier>
+		</className>
+		<symbol> . </symbol>
+		<subroutineName>
+			<identifier> printInt </identifier>
+		</subroutineName>
+		<symbol> ( </symbol>
+		<expressionList>
+			<expression>
+				<term>
+					<varName>
+						<identifier> greatest </identifier>
+					</varName>
+				</term>
+			</expression>
+		</expressionList>
+		<symbol> ) </symbol>
+	</subroutineCall>
+	<symbol> ; </symbol>
+	</doStatement>
+</tokens>
+
+
+
+
+
+

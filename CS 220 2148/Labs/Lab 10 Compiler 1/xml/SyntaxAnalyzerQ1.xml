@@ -1,0 +1,15 @@
+<tokens>
+	<letStatement>
+		<keyword> let </keyword>
+		<varName>
+			<identifier> greatest </identifier>
+		</varName>
+		<symbol> = </symbol>
+		<expression>
+			<term>
+				<stringConstant> x is greater </stringConstant>
+			</term>
+		</expression>
+		<symbol> ; </symbol>
+	</letStatement>
+</tokens>

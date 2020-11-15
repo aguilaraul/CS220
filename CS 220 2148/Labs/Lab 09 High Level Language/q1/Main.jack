@@ -1,0 +1,28 @@
+// In Jack, the code begins in Main.jack
+// In function: main()
+
+class Main {
+	// Entry point is main() function:
+	// function == static
+	
+	function void main() {
+		// Start with variable declaration
+		var int x, y, greatest;
+		
+		// Assignment statements
+		let x = 3;
+		let y = 5;
+		
+		if(x > y) {
+			let greatest = x;
+		} else {
+			let greatest = y;
+		}
+		
+		// Make function/method call need keyword 'do'
+		do Output.printInt(greatest);
+		
+		// Requires return statement
+		return;
+	}
+}

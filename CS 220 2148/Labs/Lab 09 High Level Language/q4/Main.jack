@@ -1,0 +1,24 @@
+// Lab 10 Question 4
+class Main {
+	function void main() {
+		var int birthYear, currentAge, futureAge, futureYear;
+		
+		// Get birth year and print current age
+		let birthYear = Keyboard.readInt("Enter your birth year: ");
+		let currentAge = 2020 - birthYear;
+		do Output.printString("You are ");
+		do Output.printInt(currentAge);
+		do Output.printString(" years old");
+		
+		// Get future age and print year
+		do Output.println();
+		let futureAge = Keyboard.readInt("Enter a future age: ");
+		let futureYear = birthYear + futureAge;
+		do Output.printString("You will be ");
+		do Output.printInt(futureAge);
+		do Output.printString(" in the year ");
+		do Output.printInt(futureYear);
+		
+		return;
+	}
+}

@@ -1,0 +1,22 @@
+// Lab 10 Question 2
+class Main {
+	function void main() {
+		var int x, y, product, n;
+		let x = 2;
+		let y = 5;
+		let product = 0;
+		let n = 1;
+		
+		// while(~(n >y))
+		
+		while(n - y < 1) {
+			let product = product + x;
+			let n = n + 1;
+		}
+		
+		do Output.printString("The product is ");
+		do Output.printInt(product);
+		
+		return;
+	}
+}

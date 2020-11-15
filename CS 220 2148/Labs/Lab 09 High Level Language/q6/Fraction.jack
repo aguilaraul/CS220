@@ -1,0 +1,28 @@
+class Fraction {
+	field int numerator, denominator;
+	
+	constructor Fraction new(int a, int b) {
+		let numerator = a;
+		let denominator = b;
+		return this;
+	}
+	
+	// Getters
+	method int getNumerator() { return numerator; }
+	method int getDenominator() { return denominator; }
+	
+	method Fraction plus(Fraction other) {
+		var int sum;
+		let sum = (numerator * other.getDenominator()) +
+			(other.getNumerator() * denominator);
+		return Fraction.new(sum, denominator * other.getDenominator());
+	}
+	
+	// Print
+	method void print() {
+		do Output.printInt(numerator);
+		do Output.printString("/");
+		do Output.printInt(denominator);
+		return;
+	}
+}
